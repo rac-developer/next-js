@@ -1,7 +1,9 @@
 import { bebas_neue } from "@/app/ui/fonts";
+import { Suspense } from "react";
+import { RevenueChartSkeleton } from "@/app/components/Skeleton";    
 import CardWrapper from "@/app/components/CardWrapper";
 import ChartWrapper from "@/app/components/ChartWrapper";
-import LatestInvoicesWrapper from "../components/LatestInvoicesWrapper";
+import LatestInvoicesWrapper from "@/app/components/LatestInvoicesWrapper";
 
 const Dashboard = () => {
     return (
@@ -17,7 +19,10 @@ const Dashboard = () => {
                     <h2 className={`${bebas_neue.className} mb-4 text-xl md:text-2xl`}>
                         Recent revenues
                     </h2>
-                    <ChartWrapper/>
+
+                    <Suspense fallback={<RevenueChartSkeleton/>}>
+                        <ChartWrapper/>
+                    </Suspense>
                 </div>
                 <div className="w-full md:col-span-4">
                     <h2 className={`${bebas_neue.className} mb-4 text-xl md:text-2xl`}>

@@ -3,6 +3,8 @@ const headers = {
     Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c"
 }
 
+//urls
+
 export const fetchCardData = async () => {
     try {
         const [getCustomerCount, getInvoicesCount, getInvoicesStatusCount] = await Promise.all([
@@ -36,6 +38,9 @@ export const fetchRevenues = async () => {
     try {
         const fetchRevenues = await fetch(`${process.env.BACKEND_URL}/revenues`, { headers });
         const revenueResult = await fetchRevenues.json();
+        console.log("Fetching Revenue data...")
+        await new Promise(resolve => setTimeout(resolve, 3000));
+        console.log("Data completed afteree 3 seconds")
 
         return revenueResult;
     } catch (error) {
@@ -53,5 +58,32 @@ export const fetchLatestInvocies = async () => {
     } catch (error) {
         console.log("error :>> ", error);
         throw new Error("Failed to fetch invoices");
+    }
+}
+
+//Search
+export const fetchFilteredInvocies = async (query?: string,currentPage?: number) => {
+    try {
+        const fetchFilteredInvocies = await fetch(`${process.env.BACKEND_URL}/invoices/paginate?q=${query}&page=${currentPage}`, { headers });
+        const resultFetchFilteredInvocies = await fetchFilteredInvocies.json();
+
+        return resultFetchFilteredInvocies;
+    } catch (error) {
+        console.log("error :>> ", error);
+        throw new Error("Failed to fetch resultFetchFilteredInvocies");
+    }
+}
+
+//Search --> total pages
+
+export const fetchInvoicesPages = async (query: string) => {
+    try {
+        const getInvoicesPages = await fetch(`${process.env.BACKEND_URL}/invoices/page-count?q=${query}`, { headers });
+        const resultGetInvoicesPages = await getInvoicesPages.json();
+
+        return resultGetInvoicesPages;
+    } catch (error) {
+        console.log("error :>> ", error);
+        throw new Error("Failed to fetch resultGetInvoicesPages data");
     }
 }
