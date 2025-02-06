@@ -22,8 +22,8 @@ const Dashboard = () => {
                 <div className="w-full md:col-span-4">
                     <h2 className={`${bebas_neue.className} mb-4 text-xl md:text-2xl`}>
                         Invoices
-                    <LatestInvoicesWrapper/>
                     </h2>
+                    <LatestInvoicesWrapper/>
                 </div>
              </div>
         </main>
