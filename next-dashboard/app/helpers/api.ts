@@ -87,3 +87,17 @@ export const fetchInvoicesPages = async (query: string) => {
         throw new Error("Failed to fetch resultGetInvoicesPages data");
     }
 }
+
+// Customers
+
+export const fetchCutomers = async () => {
+    try {
+        const getCustomers = await fetch(`${process.env.BACKEND_URL}/customer`, { headers });
+        const resultGetCustomers = await getCustomers.json();
+
+        return resultGetCustomers;
+    } catch (error) {
+        console.log("error :>> ", error);
+        throw new Error("Failed to fetch customers data");
+    }
+}
