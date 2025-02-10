@@ -13,7 +13,7 @@ GET https://backend-next-tutorial-fay6a.ondigitalocean.app/api/v1/invoices HTTP/
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c 
 
 ### Invoices
-GET https://backend-next-tutorial-fay6a.ondigitalocean.app/api/v1/invoice/6765bd4290a82bd45ae0b0bd HTTP/1.1
+GET https://backend-next-tutorial-fay6a.ondigitalocean.app/api/v1/invoice/67aa3e9761cc2632a9ced256 HTTP/1.1
 Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c  
 
 ### Invoices paginate

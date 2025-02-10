@@ -101,3 +101,19 @@ export const fetchCutomers = async () => {
         throw new Error("Failed to fetch customers data");
     }
 }
+
+//Id bill
+
+export const fetchInvoiceById = async (id:string) => {
+    try {
+        const getInvoiceById = await fetch(`${process.env.BACKEND_URL}/invoice/${id}`, { headers });
+        const resultInvoiceById = await getInvoiceById.json();
+
+        return resultInvoiceById;
+    } catch (error) {
+        console.log("error :>> ", error);
+        throw new Error("Failed to fetch resultInvoiceById data");
+    }
+}
+
+console.log('data :>>', fetchInvoiceById)
