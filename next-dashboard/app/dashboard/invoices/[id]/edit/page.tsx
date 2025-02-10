@@ -11,6 +11,7 @@ interface EditInvoiceProps {
 const EditInvoice: FC<EditInvoiceProps> = async ({params}) => {
     const path = await params;
     console.log("props :>> ", path)
+    // En el path."id", lo que esta entre comillas en el nombre que le vas a poner a la carpeta de las ids
     const id = path.id
     const breadCrumbs = [
         {
