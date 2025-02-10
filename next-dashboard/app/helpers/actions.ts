@@ -17,7 +17,7 @@ const FormSchema = z.object({
   });
 
 const CreateInvoice = FormSchema.omit({ id: true, date: true });
-const UpdateInvoice = FormSchema.omit({ date: true, id: true });
+const UpdateInvoice = FormSchema.omit({ date: true });
 
 // Create Invoice o cargar data
 
@@ -64,47 +64,66 @@ export const createInvoice = async (prevState: CreateFormState, formData: FormDa
     redirect("/dashboard/invoices")
 }
 
-//Edit Invoice
+//Cargar Invoice
 
 export const updateInvoice = async (prevState: CreateFormState, formData: FormData) => {
-    console.log("formData :>>", formData);
-    // const validatedFields = UpdateInvoice.safeParse({
-    //     customerId: formData.get('customerId'),
-    //     amount: formData.get('amount'),
-    //     status: formData.get('status'),
-    //     id: formData.get('id')
-    // });
+    const validatedFields = UpdateInvoice.safeParse({
+        id: formData.get('invoiceId'),
+        customerId: formData.get('customerId'),
+        amount: formData.get('amount'),
+        status: formData.get('status'),
+    });
 
-    // if (!validatedFields.success) {
-    //     return {
-    //         errors: validatedFields.error.flatten().fieldErrors,
-    //         message: "Missing Fields. Failed to Update Invoice."
-    //     }
-    // };
+    if (!validatedFields.success) {
+        return {
+            errors: validatedFields.error.flatten().fieldErrors,
+            message: "Missing Fields. Failed to Update Invoice."
+        }
+    };
 
-    // const {customerId, amount, status, id} = validatedFields.data;
-    // const amountInCents = amount * 100;
+    const {customerId, amount, status, id} = validatedFields.data;
+    const amountInCents = amount * 100;
 
-    // const body ={
-    //     status,
-    //     amount: amountInCents,
-    //     customer: customerId
-    // };
+    const body ={
+        status,
+        amount: amountInCents,
+        customer: customerId
+    };
 
-    // try {
-    //     await fetch(`${process.env.BACKEND_URL}/invoices/${id}`, {
-    //         headers:{
-    //             "Content-Type": "application/json",
-    //             Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c",
-    //         },
-    //         method: "PUT",
-    //         body: JSON.stringify(body)
-    //     });
-    // } catch (error) {
-    //     return {
-    //         message: 'Database Error: Failed to Update Invoice.',
-    //     };
-    // }
+    try {
+        await fetch(`${process.env.BACKEND_URL}/invoices/${id}`, {
+            headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c",
+            },
+            method: "PUT",
+            body: JSON.stringify(body)
+        });
+    } catch (error) {
+        return {
+            message: 'Database Error: Failed to Update Invoice.',
+        };
+    }
     revalidatePath("/dashboard/invoices")
     redirect("/dashboard/invoices")
+}
+
+//boton de borrar
+
+export const deleteInvoice = async (FormData: FormData) => {
+    const id = FormData.get('invoiceId');
+    try {
+        await fetch(`${process.env.BACKEND_URL}/invoices/${id}`, {
+            headers:{
+                "Content-Type": "application/json",
+                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c",
+            },
+            method: "DELETE"
+        });
+    revalidatePath("/dashboard/invoices");
+    } catch (error) {
+        return {
+            message: 'Database Error: Failed to Delete Invoice.',
+        };
+    }
 }
