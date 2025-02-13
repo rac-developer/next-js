@@ -3,14 +3,21 @@ import { InvoiceSkeleton } from "@/app/components/Skeleton";
 import { FC, Suspense } from "react";
 import { fetchInvoicesPages } from "@/app/helpers/api";
 import { TableButtons } from "anjrot-components"
+import { Metadata } from "next";
 import PaginationWrapper from "@/app/components/PaginationWrapper";
 import Search from "@/app/components/Search";
 import InvoiceWrapper from "@/app/components/InvoiceWrapper";
 import Link from "next/link";
 
+
 interface InvoicesProps {
     searchParams?: Promise<{query?: string, page?: number}> 
 }
+
+export const metadata: Metadata ={
+  title: "Invoices",
+}
+
 
 const Invoices: FC<InvoicesProps> = async ({searchParams}) => {
     const params = await searchParams;

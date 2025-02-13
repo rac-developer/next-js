@@ -2,6 +2,7 @@ import { Breadcrumbs } from "anjrot-components";
 import { bebas_neue } from "@/app/ui/fonts";
 import { FC } from "react";
 import { fetchCutomers, fetchInvoiceById } from "@/app/helpers/api";
+import { notFound } from "next/navigation";
 import FormEditWrapper from "@/app/components/FormEditWrapper";
 
 interface EditInvoiceProps {
@@ -26,6 +27,10 @@ const EditInvoice: FC<EditInvoiceProps> = async ({params}) => {
     ];
 
     const [getCustomers, invoice] = await Promise.all([fetchCutomers(), fetchInvoiceById(id)]);
+
+    if (!invoice) {
+        notFound();
+    }
 
     return (
         <main>
