@@ -1,4 +1,6 @@
 'use server'
+import { signIn } from '@/auth';
+import { AuthError } from 'next-auth';
 import { CreateFormState } from 'anjrot-components';
 import { revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
@@ -125,5 +127,23 @@ export const deleteInvoice = async (FormData: FormData) => {
         return {
             message: 'Database Error: Failed to Delete Invoice.',
         };
+    }
+}
+
+//authentication
+
+export const authenticate = async (state: string | undefined, formData: FormData) => {
+    try {
+        await signIn("credentials", formData);
+      } catch (error) {
+        if (error instanceof AuthError) {
+          switch (error.type) {
+            case "CredentialsSignin":
+              return "Invalid credentials.";
+            default:
+              return "Something went wrong.";
+          }
+        }
+        throw error;
     }
 }
