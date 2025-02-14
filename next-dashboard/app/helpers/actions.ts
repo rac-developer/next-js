@@ -5,6 +5,8 @@ import { CreateFormState } from 'anjrot-components';
 import { revalidatePath } from 'next/cache';
 import { redirect } from "next/navigation";
 import { z } from 'zod';
+import { auth } from "@/auth"
+import { authHeaders } from "./utils";
 
 const FormSchema = z.object({
     id: z.string(),
@@ -24,6 +26,7 @@ const UpdateInvoice = FormSchema.omit({ date: true });
 // Create Invoice o cargar data
 
 export const createInvoice = async (prevState: CreateFormState, formData: FormData) => {
+    const session = await auth();
     const validatedFields = CreateInvoice.safeParse({
         customerId: formData.get('customerId'),
         amount: formData.get('amount'),
@@ -50,10 +53,7 @@ export const createInvoice = async (prevState: CreateFormState, formData: FormDa
 
     try {
         await fetch(`${process.env.BACKEND_URL}/invoices`, {
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c",
-            },
+            headers:authHeaders(session?.user?.token),
             method: "POST",
             body: JSON.stringify(body)
         });
@@ -69,6 +69,7 @@ export const createInvoice = async (prevState: CreateFormState, formData: FormDa
 //Cargar Invoice
 
 export const updateInvoice = async (prevState: CreateFormState, formData: FormData) => {
+    const session = await auth();
     const validatedFields = UpdateInvoice.safeParse({
         id: formData.get('invoiceId'),
         customerId: formData.get('customerId'),
@@ -94,10 +95,7 @@ export const updateInvoice = async (prevState: CreateFormState, formData: FormDa
 
     try {
         await fetch(`${process.env.BACKEND_URL}/invoices/${id}`, {
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c",
-            },
+            headers: authHeaders(session?.user?.token),
             method: "PUT",
             body: JSON.stringify(body)
         });
@@ -113,13 +111,11 @@ export const updateInvoice = async (prevState: CreateFormState, formData: FormDa
 //boton de borrar
 
 export const deleteInvoice = async (FormData: FormData) => {
+    const session = await auth();
     const id = FormData.get('invoiceId');
     try {
         await fetch(`${process.env.BACKEND_URL}/invoices/${id}`, {
-            headers:{
-                "Content-Type": "application/json",
-                Authorization: "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6IjY3NGVmNzAwMmYzNGFjMWVlY2UxNzc2ZCIsImVtYWlsIjoibmV4dFR1dG9yaWFsQHRlc3QuY29tIiwibmFtZSI6Im5leHRUdXRvcmlhbCIsImlhdCI6MTczODc2NDk2Mn0.-G1OEGIAy0mCerwM1YALCcQiGoYw5vVX5V2tMSIW64c",
-            },
+            headers:authHeaders(session?.user?.token),
             method: "DELETE"
         });
     revalidatePath("/dashboard/invoices");
@@ -133,6 +129,7 @@ export const deleteInvoice = async (FormData: FormData) => {
 //authentication
 
 export const authenticate = async (state: string | undefined, formData: FormData) => {
+    const session = await auth();
     try {
         await signIn("credentials", formData);
       } catch (error) {
