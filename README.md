@@ -1,1 +1,1 @@
-# curso-next-js
+# Projects in Next.js
