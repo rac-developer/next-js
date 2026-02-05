@@ -5,7 +5,7 @@ function HomePage() {
   return (
     <div>
       <h1>
-        1000
+        total: 1000
       </h1>
       <button>
         Increment
