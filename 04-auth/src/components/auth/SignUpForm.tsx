@@ -1,6 +1,7 @@
 import { Flex, TextField, Button } from '@radix-ui/themes'
 import { EnvelopeClosedIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons'
 
+
 function SignUpForm() {
   return (
     <Flex direction="column" gap="2">
