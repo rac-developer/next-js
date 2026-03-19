@@ -10,7 +10,12 @@ function SignInForm() {
   // const {register, handleSubmit} = useForm()
 
   // En el caso que el componente viene de una libreria
-  const {control, handleSubmit, formState: {errors} } = useForm()
+  const {control, handleSubmit, formState: {errors} } = useForm({
+    values: {
+      email: "",
+      password: ""
+    }
+  })
 
   const onSubmit = (data) => {
     console.log(data)
@@ -18,7 +23,7 @@ function SignInForm() {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-        <Flex direction="column" gap="2">
+      <Flex direction="column" gap="2">
         <label htmlFor="email">Email</label>
         {/* Usamos el componente Controller, porque viene de una libreria ui */}
         <Controller
@@ -43,7 +48,7 @@ function SignInForm() {
           )}
         />
         
-        {errors.email && <Text>{errors.email?.message as string}</Text>}
+        {errors.email && <Text color='ruby' className='text-xs'>{errors.email.message}</Text>}
 
         <label htmlFor="password">Password</label>
         <Controller
@@ -53,6 +58,10 @@ function SignInForm() {
             required: {
               message: "Password is required",
               value: true
+            },
+            minLength: {
+              message: "Password must be at least 6 characters",
+              value: 6
             }
           }}
           render={({ field }) => (
@@ -68,7 +77,9 @@ function SignInForm() {
           )}
         />
 
-        <Button type='submit'>
+        {errors.password && <Text color='ruby' className='text-xs'>{errors.password.message}</Text>}
+
+        <Button type='submit' mt="4">
           Sign in
         </Button>
       </Flex>
