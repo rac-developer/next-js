@@ -1,6 +1,11 @@
 import {Container, Card, Heading, Flex, Text, Link } from "@radix-ui/themes"
 import NavLink from 'next/link'
 import SignUpForm from '@/src/components/auth/SignUpForm'
+/* The `async` keyword in JavaScript/TypeScript is used to define an asynchronous function. An
+asynchronous function is a function that operates asynchronously via the event loop, using
+Promises or the `await` keyword to handle asynchronous operations. This allows the function
+to pause execution while waiting for asynchronous operations to complete, without blocking
+the main thread. */
 
 function RegisterPage() {
   return (

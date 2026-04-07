@@ -9,7 +9,7 @@ function LoginPage() {
         <Flex className="h-screen w-full items-center">
           <Card className="w-full p-7">
             <Heading>Sign in</Heading>
-            <SignInForm></SignInForm>
+            <SignInForm/>
             <Flex justify="between" my="4">
               <Text>
                 Don't have an account?

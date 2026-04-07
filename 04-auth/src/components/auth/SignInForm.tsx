@@ -3,6 +3,7 @@
 import { Flex, TextField, Button, Text } from '@radix-ui/themes'
 import { EnvelopeClosedIcon, LockClosedIcon } from '@radix-ui/react-icons'
 import { useForm, Controller } from 'react-hook-form'
+import { signIn } from 'next-auth/react'
 
 function SignInForm() {
 
@@ -17,12 +18,19 @@ function SignInForm() {
     }
   })
 
-  const onSubmit = (data: { email: string; password: string }) => {
+  const onSubmit = handleSubmit(async (data: { email: string; password: string }) => {
     console.log(data)
-  }
+    // El 'credentials' es el nombre del credencial que tiene app/api/[...nexthauth]/route.ts
+    const res = await signIn('credentials', {
+      redirect: false,
+      email: data.email,
+      password: data.password
+    })
+    console.log(res)
+  })
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form onSubmit={onSubmit}>
       <Flex direction="column" gap="2">
         <label htmlFor="email">Email</label>
         {/* Usamos el componente Controller, porque viene de una libreria ui */}
