@@ -1,9 +1,13 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/src/libs/prisma';
+import bcrypt from 'bcrypt'
 
 export async function POST(request: Request) {
   try {
     const data = await request.json();
+
+    const salt = await bcrypt.genSalt(10);
+    data.password = await bcrypt.hash(data.password, salt);
 
     const userFound = await prisma.user.findUnique({
       where: {
