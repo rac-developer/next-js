@@ -17,7 +17,7 @@ function SignInForm() {
     }
   })
 
-  const onSubmit = (data) => {
+  const onSubmit = (data: { email: string; password: string }) => {
     console.log(data)
   }
 
