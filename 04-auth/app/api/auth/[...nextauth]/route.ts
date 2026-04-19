@@ -1,6 +1,7 @@
 import NextAuth from 'next-auth'
 import CredentialsProvider from "next-auth/providers/credentials";
 import prisma from '@/src/libs/prisma';
+import bcrypt from 'bcrypt'
 
 const handler = NextAuth({
   providers: [
@@ -10,21 +11,37 @@ const handler = NextAuth({
         email: { label: "Email", type: "email", placeholder: "user@something.com" },
         password: { label: "Password", type: "password" }
       },
-      async authorize(credentials, req) {
-        const { email, password } = credentials
+      async authorize(credentials) {
+
+        if (!credentials) throw new Error("No credentials provided");
         console.log(credentials)
 
-        const userFond = await prisma.user.findUnique({
-          where: {
-            email: email
+        const { email, password } = credentials;
+
+        const userFound = await prisma.user.findUnique({
+          where: { email },
+          select: {
+            id: true,
+            name: true,
+            email: true,
+            password: true
           }
         });
 
-        if(!userFond) throw new Error ("Invalid credentials")
+        if (!userFound) throw new Error("Invalid credentials")
 
-        console.log(userFond)
+        const validPassword = await bcrypt.compare(
+          password, 
+          userFound.password
+        )
+        
+        if(!validPassword) throw new Error("Invalid Credentials")
 
-        return null
+        return {
+          id: userFound.id + '',
+          name: userFound.name,
+          email: userFound.email
+        };
       }
     })
   ],

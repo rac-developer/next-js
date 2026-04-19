@@ -26,7 +26,10 @@ export async function POST(request: Request) {
       data
     });
 
-    return NextResponse.json(newUser, { status: 201 });
+    // Para que no mande la clave al frontend
+    const { password, ...user } = newUser
+
+    return NextResponse.json(user, { status: 201 });
   } catch (error: any) {
     console.error("DETALLE DEL ERROR:", error);
     return NextResponse.json({ error: error.message }, { status: 500 });
