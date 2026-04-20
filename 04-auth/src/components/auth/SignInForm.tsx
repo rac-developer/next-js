@@ -4,6 +4,7 @@ import { Flex, TextField, Button, Text } from '@radix-ui/themes'
 import { EnvelopeClosedIcon, LockClosedIcon } from '@radix-ui/react-icons'
 import { useForm, Controller } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 
 function SignInForm() {
 
@@ -18,15 +19,23 @@ function SignInForm() {
     }
   })
 
+  const router = useRouter()
+
   const onSubmit = handleSubmit(async (data: { email: string; password: string }) => {
     console.log(data)
+    
     // El 'credentials' es el nombre del credencial que tiene app/api/[...nexthauth]/route.ts
     const res = await signIn('credentials', {
       redirect: false,
       email: data.email,
       password: data.password
     })
-    console.log(res)
+
+    if (res?.ok) {
+      console.log(res)
+    }
+
+    router.push('/dashboard')
   })
 
   return (

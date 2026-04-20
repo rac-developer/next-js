@@ -14,7 +14,7 @@ const handler = NextAuth({
       async authorize(credentials) {
 
         if (!credentials) throw new Error("No credentials provided");
-        console.log(credentials)
+        // console.log(credentials)
 
         const { email, password } = credentials;
 
