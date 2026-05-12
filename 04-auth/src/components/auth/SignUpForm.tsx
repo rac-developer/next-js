@@ -3,6 +3,8 @@
 import { Flex, TextField, Button, Text } from '@radix-ui/themes'
 import { EnvelopeClosedIcon, LockClosedIcon, PersonIcon } from '@radix-ui/react-icons'
 import { useForm, Controller } from 'react-hook-form'
+import { signIn } from 'next-auth/react'
+import { useRouter } from 'next/navigation'
 import axios from 'axios'
 
 function SignUpForm() {
@@ -15,9 +17,29 @@ function SignUpForm() {
     }
   })
 
+  const router = useRouter()
+
   const onSubmit = handleSubmit(async (data) => {
     const res = await axios.post('/api/auth/register', data)
     console.log(res)
+
+
+    if (res.status === 201) {
+      
+      const result = await signIn('credentials', {
+        redirect: false,
+        email: res.data.email,
+        password: data.password
+      })
+
+      if(!result?.ok) {
+        console.log(result?.error)
+        return;
+      }
+    
+      router.push('/dashboard')
+    }
+      
   })
 
   return (
