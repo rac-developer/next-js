@@ -1,0 +1,65 @@
+'use client'
+import { TextField, TextArea, Container, Button, Flex, Card, Heading } from '@radix-ui/themes'
+import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
+import { useForm, Controller } from 'react-hook-form'
+
+function TaskNewPage() {
+
+  const {control, handleSubmit} = useForm({
+    values: {
+      title:'',
+      description:''
+    }
+  })
+
+  const onSubmit = handleSubmit((data) => {
+    console.log(data);
+  })
+
+  return (
+    <>
+      <Container size="1" height="100%" className="p-3 md:p-0">
+        <Flex className="h-screen w-full items-center">
+          <Card className="w-full p-7">
+            <Heading>New Project</Heading>
+            <form className='flex flex-col gap-y-2' onSubmit={onSubmit}>
+              <label>
+                Project Title
+              </label>
+              <Controller
+              name='title'
+              control={control}
+                render={({field}) => {
+                  return(
+                    <TextField.Root placeholder="Search the docs…" size="3" {...field}>
+                      <TextField.Slot>
+                        <MagnifyingGlassIcon height="16" width="16" />
+                      </TextField.Slot>
+                    </TextField.Root>              
+                  );
+              }}
+              />
+              <label>
+                Project Description
+              </label>
+              <Controller
+              name='description'
+              control={control}
+              render={({field}) => {
+                return(
+                  <TextArea size="3" placeholder="Reply to comment…" {...field}/>
+                );
+              }}
+              />
+              <Button>
+                Create Project
+              </Button>
+            </form>
+          </Card>
+        </Flex>
+      </Container>
+    </>
+  )
+}
+
+export default TaskNewPage
