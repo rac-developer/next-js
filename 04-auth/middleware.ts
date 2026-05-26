@@ -11,4 +11,6 @@ export default withAuth({
   },
 })
 
-export const config = { matcher: ["/dashboard"] }
+// :path* permite que coincida con cualquier ruta que empiece con /dashboard
+// /dashboard, /dashboard/projects, /dashboard/settings, etc.
+export const config = { matcher: ["/dashboard/:path*"] }

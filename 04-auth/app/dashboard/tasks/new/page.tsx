@@ -2,6 +2,7 @@
 import { TextField, TextArea, Container, Button, Flex, Card, Heading } from '@radix-ui/themes'
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { useForm, Controller } from 'react-hook-form'
+import axios from 'axios'
 
 function TaskNewPage() {
 
@@ -12,8 +13,10 @@ function TaskNewPage() {
     }
   })
 
-  const onSubmit = handleSubmit((data) => {
+  const onSubmit = handleSubmit(async (data) => {
     console.log(data);
+    const res = await axios.post('/api/projects', data)
+    console.log(res);
   })
 
   return (
