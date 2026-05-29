@@ -43,3 +43,5 @@ next-env.d.ts
 
 # Prisma 7 generated client
 /app/generated/prisma
+
+.antigravitycli
