@@ -3,6 +3,7 @@ import { TextField, TextArea, Container, Button, Flex, Card, Heading } from '@ra
 import { MagnifyingGlassIcon } from '@radix-ui/react-icons'
 import { useForm, Controller } from 'react-hook-form'
 import axios from 'axios'
+import { useRouter } from 'next/navigation'
 
 function TaskNewPage() {
 
@@ -13,9 +14,15 @@ function TaskNewPage() {
     }
   })
 
+  const router = useRouter()
+
   const onSubmit = handleSubmit(async (data) => {
     console.log(data);
     const res = await axios.post('/api/projects', data)
+    if(res.status === 201) {
+      router.push('/dashboard')
+      router.refresh()
+    }
     console.log(res);
   })
 
