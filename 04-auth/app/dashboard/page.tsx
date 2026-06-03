@@ -1,8 +1,9 @@
 import HeaderDashboard from '@/src/components/dashboard/HeaderDashboard'
-import { Container, Card, Flex, Heading, Button, Grid, Text } from '@radix-ui/themes'
+import { Container, Grid } from '@radix-ui/themes'
 import prisma from '@/src/libs/prisma'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
+import ProjectCard from '@/src/components/projects/ProjectCard'
 
 async function loadProjects(userId:number){    
     return await prisma.project.findMany({
@@ -23,16 +24,7 @@ async function DashboardPage() {
       <Grid columns={"3"} gap="3" className='mt-5'>
         {
           projects.map(project => (
-            <Card key={project.id} >
-              <Flex direction="column" gap="2">
-                <Heading size={"3"}>
-                  {project.name}
-                </Heading>
-                <Text className='text-slate-500'>
-                  {project.description}
-                </Text>
-              </Flex>
-            </Card>
+            <ProjectCard key={project.id} project={project} />
           ))
         }
       </Grid>
