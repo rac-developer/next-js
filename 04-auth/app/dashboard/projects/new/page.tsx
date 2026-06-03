@@ -36,6 +36,16 @@ function TaskNewPage() {
 
   })
 
+  const handleDelete = async (projectId:string) => {
+    console.log(projectId);
+    const res = await axios.delete(`/api/projects/${projectId}`)
+    if(res.status === 200) {
+      alert('Project Deleted')
+      router.push('/dashboard')
+      router.refresh()
+    }
+  }
+
   return (
     <>
       <Container size="1" height="100%" className="p-3 md:p-0">
@@ -80,7 +90,7 @@ function TaskNewPage() {
 
             <div className="flex justify-end mt-4">
               {params.projectId && 
-                <Button color='red'> 
+                <Button color='red' onClick={() => handleDelete(params.projectId as string)}>
                   <TrashIcon/> 
                   Delete Project
                 </Button>
