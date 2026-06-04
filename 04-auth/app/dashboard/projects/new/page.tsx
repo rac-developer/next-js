@@ -5,6 +5,7 @@ import { useForm, Controller } from 'react-hook-form'
 import axios from 'axios'
 import { useRouter, useParams } from 'next/navigation'
 import { TrashIcon } from '@radix-ui/react-icons'
+import { toast } from 'sonner'
 
 function TaskNewPage() {
 
@@ -40,7 +41,7 @@ function TaskNewPage() {
     console.log(projectId);
     const res = await axios.delete(`/api/projects/${projectId}`)
     if(res.status === 200) {
-      alert('Project Deleted')
+      toast.success('Project Deleted', {duration:1000})
       router.push('/dashboard')
       router.refresh()
     }

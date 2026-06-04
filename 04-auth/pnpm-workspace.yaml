@@ -5,3 +5,5 @@ allowBuilds:
   esbuild: true
   prisma: true
   '@prisma/client': true # Adding this for completeness, though 'prisma' usually covers it.
+  sharp: false
+  unrs-resolver: false
