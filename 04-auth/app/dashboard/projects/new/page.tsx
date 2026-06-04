@@ -6,10 +6,11 @@ import axios from 'axios'
 import { useRouter, useParams } from 'next/navigation'
 import { TrashIcon } from '@radix-ui/react-icons'
 import { toast } from 'sonner'
+import { useEffect } from 'react'
 
 function TaskNewPage() {
 
-  const {control, handleSubmit} = useForm({
+  const {control, handleSubmit, setValue} = useForm({
     values: {
       title:'',
       description:''
@@ -46,6 +47,15 @@ function TaskNewPage() {
       router.refresh()
     }
   }
+
+  useEffect(() => {
+    if(params.projectId) {
+      axios.get(`/api/projects/${params.projectId}`).then((res) => {
+        setValue('title', res.data.title)
+        setValue('description', res.data.description)
+      })
+    }
+  }, [])
 
   return (
     <>

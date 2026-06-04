@@ -20,7 +20,7 @@ function ProjectCard({ project }: Props) {
     >
       <Flex direction="column" gap="2">
         <Heading size={"3"}>
-          {project.name}
+          {project.title}
         </Heading>
         <Text className='text-slate-500'>
           {project.description}

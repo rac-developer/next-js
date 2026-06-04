@@ -11,7 +11,7 @@ export async function POST(request: Request) {
 
   const newProject = await prisma.project.create({
     data: {
-      name: data.title,
+      title: data.title,
       description: data.description,
       user: {
         connect: {
