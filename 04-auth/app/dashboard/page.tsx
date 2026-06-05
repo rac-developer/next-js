@@ -4,6 +4,7 @@ import prisma from '@/src/libs/prisma'
 import { getServerSession } from 'next-auth/next'
 import { authOptions } from '@/app/api/auth/[...nextauth]/route'
 import ProjectCard from '@/src/components/projects/ProjectCard'
+import { redirect } from 'next/dist/server/api-utils'
 
 async function loadProjects(userId:number){    
     return await prisma.project.findMany({
@@ -19,15 +20,15 @@ async function DashboardPage() {
   const projects = await loadProjects(parseInt(session?.user?.id! as string))
 
   return (
-    <Container className='mt-10'>
+    <Container className='mt-10 px-10 md:px-0'>
       <HeaderDashboard /> 
-      <Grid columns={"3"} gap="3" className='mt-5'>
+      <div className='mt-5 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5'>
         {
           projects.map(project => (
             <ProjectCard key={project.id} project={project} />
           ))
         }
-      </Grid>
+      </div>
     </Container>
   )
 }
