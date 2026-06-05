@@ -1,7 +1,7 @@
 "use client"
 
 import { Card, Flex, Heading, Text } from '@radix-ui/themes'
-import { Project } from '@prisma/client'
+import { Project } from '@/app/generated/prisma/client'
 import { useRouter } from 'next/navigation'
 
 interface Props {
