@@ -1,17 +1,11 @@
 import "dotenv/config";
 import { PrismaClient } from "@/app/generated/prisma/client";
-import { PrismaLibSql } from "@prisma/adapter-libsql";
+import { Pool } from "pg";
+import { PrismaPg } from "@prisma/adapter-pg";
 
 const prismaClientSingleton = () => {
-  // 🔍 Validación de depuración: Si esto falla, el problema es el archivo .env
-  const url = process.env.DATABASE_URL;
-  if (!url) {
-    throw new Error("❌ DATABASE_URL no está definida. Revisa tu archivo .env");
-  }
-
-  const adapter = new PrismaLibSql({
-    url: url, // Asegúrate de que en el .env sea "file:./dev.db"
-  });
+  const pool = new Pool({ connectionString: process.env.DATABASE_URL });
+  const adapter = new PrismaPg(pool);
 
   return new PrismaClient({
     adapter,
