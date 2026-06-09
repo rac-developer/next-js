@@ -5,7 +5,7 @@ import { EnvelopeClosedIcon, LockClosedIcon } from '@radix-ui/react-icons'
 import { useForm, Controller } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
-
+import { toast } from 'sonner'
 function SignInForm() {
 
   // En el caso que el componente sea creado por nosotros y no exportado por una libreria
@@ -31,13 +31,13 @@ function SignInForm() {
       password: data.password
     })
 
-    if (res?.ok) {
-      console.log(res)
+    if (!res?.ok) {
+      toast.error(res?.error || "Credenciales inválidas o el usuario no existe.")
+      return
     }
 
     router.push('/dashboard')
   })
-
   return (
     <form onSubmit={onSubmit}>
       <Flex direction="column" gap="2">

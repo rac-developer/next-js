@@ -6,7 +6,7 @@ import { useForm, Controller } from 'react-hook-form'
 import { signIn } from 'next-auth/react'
 import { useRouter } from 'next/navigation'
 import axios from 'axios'
-
+import { toast } from 'sonner'
 function SignUpForm() {
 
   const {control, handleSubmit, formState: {errors} } = useForm({
@@ -20,28 +20,33 @@ function SignUpForm() {
   const router = useRouter()
 
   const onSubmit = handleSubmit(async (data) => {
-    const res = await axios.post('/api/auth/register', data)
-    console.log(res)
+    try {
+      const res = await axios.post('/api/auth/register', data)
+      console.log(res)
 
+      if (res.status === 201) {
+        
+        const result = await signIn('credentials', {
+          redirect: false,
+          email: res.data.email,
+          password: data.password
+        })
 
-    if (res.status === 201) {
+        if(!result?.ok) {
+          console.log(result?.error)
+          return;
+        }
       
-      const result = await signIn('credentials', {
-        redirect: false,
-        email: res.data.email,
-        password: data.password
-      })
-
-      if(!result?.ok) {
-        console.log(result?.error)
-        return;
+        router.push('/dashboard')
       }
-    
-      router.push('/dashboard')
+    } catch (error: any) {
+      if (error.response?.status === 403 || error.response?.status === 400) {
+        toast.error(error.response.data.message || "Error al registrar el usuario.");
+      } else {
+        toast.error("Ocurrió un error inesperado al registrar.");
+      }
     }
-      
   })
-
   return (
     <form onSubmit={onSubmit}>
     <Flex direction="column" gap="2">

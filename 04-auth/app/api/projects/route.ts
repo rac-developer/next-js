@@ -9,6 +9,17 @@ export async function POST(request: Request) {
 
   if(!session) return NextResponse.json("Unauthorized", {status: 401});
 
+  const projectCount = await prisma.project.count({
+    where: { userId: parseInt(session.user.id) }
+  });
+
+  if (projectCount >= 10) {
+    return NextResponse.json(
+      { message: "Has alcanzado el límite máximo de 10 tareas." },
+      { status: 403 }
+    );
+  }
+
   const newProject = await prisma.project.create({
     data: {
       title: data.title,
