@@ -51,10 +51,27 @@ export const authOptions: AuthOptions = {
       if(user) {
         token.id = user.id;
       }
+
+      const userId = token.id || token.sub;
+      if (userId) {
+        const dbUser = await prisma.user.findUnique({
+          where: { id: parseInt(userId as string) }
+        });
+        
+        // Si el usuario ya no existe en la base de datos (ej. borrado por el cron job), invalidamos el token
+        if (!dbUser) {
+          token.error = "UserDeleted";
+        }
+      }
+
       return token;
     },
     // Esto se ejecuta cuando se crea la sesion
     async session({ session, token }) {
+      if (token.error === "UserDeleted") {
+        throw new Error("UserDeleted"); // Esto forzará a NextAuth a destruir la sesión
+      }
+
       if(token.id) {
         session.user.id = token.sub as string;
       }
