@@ -26,13 +26,15 @@ export async function GET(request: NextRequest) {
       token_hash,
     })
 
-    if (type === 'email') {
-      return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
-    }
-
     if (!error) {
+      if (type === 'email' || type === 'signup') {
+        return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
+      }
+      
       redirectTo.searchParams.delete('next')
       return NextResponse.redirect(redirectTo)
+    } else {
+      console.error('Error verificando OTP:', error.message)
     }
   }
 

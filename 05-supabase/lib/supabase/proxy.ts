@@ -49,7 +49,14 @@ export async function updateSession(request: NextRequest) {
   // Si es una ruta protegida y NO hay usuario, lo mandamos al login
   if (isProtectedRoute && !user) {
     const url = request.nextUrl.clone()
-    url.pathname = '/login' // <--- Cambia esto si tu ruta de login se llama diferente (ej: '/auth/signin')
+    url.pathname = '/' // <--- Cambia esto si tu ruta de login se llama diferente (ej: '/auth/signin')
+    return NextResponse.redirect(url)
+  }
+
+  // Si hay usuario autenticado y está intentando acceder a la página de login, lo mandamos al dashboard
+  if (user && request.nextUrl.pathname === '/') {
+    const url = request.nextUrl.clone()
+    url.pathname = '/dashboard'
     return NextResponse.redirect(url)
   }
 
