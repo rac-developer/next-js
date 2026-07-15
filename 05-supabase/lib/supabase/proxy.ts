@@ -36,7 +36,23 @@ export async function updateSession(request: NextRequest) {
 
   // IMPORTANT: If you remove getClaims() and you use server-side rendering
   // with the Supabase client, your users may be randomly logged out.
-  await supabase.auth.getClaims()
+
+  // Obtenemos el usuario de la llamada que ya estábamos haciendo
+  const { data: { user } } = await supabase.auth.getUser()
+
+  // Definimos las rutas protegidas
+  const protectedRoutes = ['/dashboard', '/profile']
+  
+  // Verificamos si la ruta actual (pathname) empieza con alguna de las rutas protegidas
+  const isProtectedRoute = protectedRoutes.some(route => request.nextUrl.pathname.startsWith(route))
+
+  // Si es una ruta protegida y NO hay usuario, lo mandamos al login
+  if (isProtectedRoute && !user) {
+    const url = request.nextUrl.clone()
+    url.pathname = '/login' // <--- Cambia esto si tu ruta de login se llama diferente (ej: '/auth/signin')
+    return NextResponse.redirect(url)
+  }
 
   return supabaseResponse
+
 }
