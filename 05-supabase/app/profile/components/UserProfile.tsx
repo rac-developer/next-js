@@ -11,6 +11,7 @@ import {
     DialogDescription,
     DialogHeader,
     DialogTitle,
+    DialogTrigger,
 } from "@/components/ui/dialog"
 import {
     Edit,
@@ -25,6 +26,8 @@ import Link from 'next/link';
 
 import Image from 'next/image';
 import { useAuth } from '@/context/AuthContext';
+import AccountForm from './AccountForm';
+import { getImageUrl } from '@/lib/utils';
 
 // Función para obtener las iniciales del nombre
 export const getInitials = (name: string | null) => {
@@ -62,7 +65,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
     className = ''
 }) => {
 
-    const { user, isLoading } = useAuth()
+    const { user, isLoading, getUserData } = useAuth()
     const [profile, setProfile] = useState<UserProfileData | null>(user as UserProfileData);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState(false);
 
@@ -136,7 +139,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                             <Avatar className="h-24 w-24 border-4 border-background shadow-lg">
                                 {profile.avatar_url ? (
                                     <Image
-                                        src={profile.avatar_url}
+                                        src={getImageUrl(profile.avatar_url)}
                                         alt={profile.name || 'Usuario'}
                                         className="object-cover"
                                         width={1000}
@@ -193,7 +196,7 @@ const UserProfile: React.FC<UserProfileProps> = ({
                             </Button>
 
 
-                            <Link href="/#" intermediate-link="true">
+                            <Link href="/update-password" intermediate-link="true">
                                 <Button
                                     variant="outline"
                                     className="w-full justify-start h-14"
@@ -230,7 +233,23 @@ const UserProfile: React.FC<UserProfileProps> = ({
                 </CardContent>
             </Card>
 
-
+            <Dialog open={isEditDialogOpen} onOpenChange={setIsEditDialogOpen}>
+                <DialogContent>
+                    <DialogHeader>
+                        <DialogTitle>Editar Perfil</DialogTitle>
+                        <DialogDescription>
+                            Aqui puedes editar la informacion de tu perfil.
+                        </DialogDescription>
+                    </DialogHeader>
+                    <AccountForm
+                        user={profile}
+                        onSuccess={() => {
+                            setIsEditDialogOpen(false);
+                            getUserData();
+                        }}
+                    />
+                </DialogContent>
+            </Dialog>
         </>
     );
 };
