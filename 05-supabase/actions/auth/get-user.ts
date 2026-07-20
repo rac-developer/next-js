@@ -1,6 +1,8 @@
+'use server'
 import { createClient } from '@/lib/supabase/server'
+import { User } from '@/interfaces/user';
 
-export async function getUser() {
+export async function getUser(): Promise<User | null> {
 
   try {
     const supabase = await createClient()
