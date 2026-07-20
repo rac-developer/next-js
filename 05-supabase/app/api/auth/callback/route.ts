@@ -31,6 +31,10 @@ export async function GET(request: NextRequest) {
         return NextResponse.redirect(`${requestUrl.origin}/dashboard`)
       }
       
+      if (type === 'recovery') {
+        return NextResponse.redirect(`${requestUrl.origin}/update-password`)
+      }
+
       redirectTo.searchParams.delete('next')
       return NextResponse.redirect(redirectTo)
     } else {
