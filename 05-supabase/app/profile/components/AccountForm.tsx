@@ -50,7 +50,7 @@ export default function AccountForm({
     const [isLoadingImage, setIsLoadingImage] = useState<boolean>(false);
 
     const form = useForm<ProfileFormValues>({
-        resolver: zodResolver(profileSchema),
+        resolver: zodResolver(profileSchema as any),
         defaultValues: {
             name: user?.name || '',
             email: user?.email || '',
